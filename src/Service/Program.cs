@@ -34,11 +34,46 @@ namespace Azure.DataApiBuilder.Service
             // Unable to use ILogger because this code is invoked before LoggerFactory
             // is instantiated.
             Console.WriteLine("Starting the runtime engine...");
-            try
+           try
             {
-                CreateHostBuilder(args).Build().Run();
+                IHost host = CreateHostBuilder(args).Build();
+
+                // Access the host's configuration and environment information
+                IConfiguration config = host.Services.GetRequiredService<IConfiguration>();
+                IWebHost? webHost = host.Services.GetService<IWebHost>();
+
+                // Initialize dictionary for values
+                Dictionary<string, string?> values = new()
+                {
+                    { "Dab Host Mode", config["Runtime:Host:Mode"] ?? "N/A" },
+                    { "Environment", config[HostDefaults.EnvironmentKey] ?? "N/A" },
+                    { "HTTP Link", "N/A" },
+                    { "HTTPS Link", "N/A" }
+                };
+
+                // Access server addresses
+                IServer? server = webHost?.Services.GetService<IServer>();
+                if (server is KestrelServer kestrelServer)
+                {
+                    var addresses = kestrelServer.Options.ListenOptions.Select(o => o.ToString());
+                    values["HTTP Link"] = addresses.FirstOrDefault(addr => addr.StartsWith("http://")) ?? "N/A";
+                    values["HTTPS Link"] = addresses.FirstOrDefault(addr => addr.StartsWith("https://")) ?? "N/A";
+                }
+
+                // Output the dictionary as a table
+                Console.Out.WriteLine();
+                Console.Out.WriteLine("{0,-20} | {1}", "Name", "Value");
+                Console.Out.WriteLine(new string('-', 50));
+                foreach (var entry in values)
+                {
+                    Console.Out.WriteLine("{0,-20} | {1}", entry.Key, entry.Value);
+                }
+                Console.Out.WriteLine();
+
+                host.Run();
                 return true;
             }
+
             // Catch exception raised by explicit call to IHostApplicationLifetime.StopApplication()
             catch (TaskCanceledException)
             {
