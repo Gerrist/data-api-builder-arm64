@@ -127,6 +127,9 @@ public abstract class Otel
     private readonly ActivitySource _activitySource;
     private readonly string _activityName;
 
+    private static readonly Meter _meter = new("DAB.Metrics");
+    private readonly Dictionary<string, Counter<long>> _counters = new();
+
     protected Otel(ActivitySource activitySource, string activityName)
     {
         _activitySource = activitySource;
