@@ -4,11 +4,11 @@
 2. **Span**
 3. **Event** (An Activity can also have events)
 
+## **Example: Add Dependency**
+
 ```csharp
 services.AddSingleton(new ActivitySource("DAB"));
 ```
-
----
 
 ## **Example: Creating an Activity**
 
