@@ -82,7 +82,8 @@ public class RestController
             }
             else
             {
-                using (var spanQueryDatabase = _otel.StartSpan("Query Database"))
+                using (var spanQueryDatabase = _otel.StartSpan("Query Database",
+                    ("retry-number", retryCount)))
                 {
                     try
                     {
