@@ -72,7 +72,7 @@ public class RestController
         {
             _otel.AddEvent("Build Query");
 
-            // Build query
+            // Build query (which is the cache key)
 
             if (cache)
             {
@@ -87,11 +87,14 @@ public class RestController
                 {
                     try
                     {
-                        _otel.AddEvent("Open Database", ("database-type", "mssql"));
+                        _otel.AddEvent("Open Database", 
+                            ("datasource-type", datasourceType),
+                            ("datasource-name", datasourceName));
 
                         // Open database connection
 
-                        _otel.AddEvent("Query Database");
+                        _otel.AddEvent("Query Database",
+                            "first-word", "SELECT");
 
                         // Execute query
                     }
