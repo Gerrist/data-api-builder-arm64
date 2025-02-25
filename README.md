@@ -1,3 +1,9 @@
+# ARM fork for Azure Data API Builder
+
+This is a community fork which aims to provide an ARM Docker image for DAB: https://github.com/Gerrist/data-api-builder-arm64/pkgs/container/data-api-builder-arm64.
+
+I felt the need for this fork because the official DAB Docker image is not available for ARM64, and I wanted to run DAB on my ARM Kubernetes cluster within [Hetzner Cloud](https://hetzner.cloud/?ref=S2qG56taMpLd) (referral link).
+
 # Data API builder for Azure Databases
 
 [![NuGet Package](https://img.shields.io/nuget/v/microsoft.dataapibuilder.svg?color=success)](https://www.nuget.org/packages/Microsoft.DataApiBuilder)
