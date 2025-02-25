@@ -12,10 +12,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    # steps:
-    # - uses: actions/checkout@v4
-    # - name: Build the Docker image
-    #   run: docker build . --file Dockerfile --tag data-api-builder-arm64:$(date +%s)
     steps:
     - uses: actions/checkout@v3
       name: Check out code
