@@ -1,0 +1,31 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    # steps:
+    # - uses: actions/checkout@v4
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag data-api-builder-arm64:$(date +%s)
+    steps:
+    - uses: actions/checkout@v3
+      name: Check out code
+  
+    - uses: mr-smithers-excellent/docker-build-push@v6
+      name: Build & push Docker image
+      with:
+        image: data-api-builder-arm64
+        tags: $(date +%s)
+        registry: ghcr.io
+        dockerfile: Dockerfile
+        username: ${{ secrets.GHCR_USERNAME }}
+        password: ${{ secrets.GHCR_TOKEN }}
